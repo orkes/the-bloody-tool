@@ -1,0 +1,9 @@
+---
+applications:
+- name: rustem-app
+  framework: spring
+  runtime: java
+  memory: 512M
+  instances: 1
+  url: rustem-app.${target-base}
+  path: .
