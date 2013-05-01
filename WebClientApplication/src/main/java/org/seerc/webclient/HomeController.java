@@ -1,14 +1,13 @@
 package org.seerc.webclient;
 
-import java.net.URL;
 import java.text.DateFormat;
 import java.util.Date;
 
 import javax.xml.namespace.QName;
 
 import org.seerc.webclient.config.QueueNames;
-import org.seerc.ws.bean.WebServiceBean;
-import org.seerc.ws.bean.WebServiceBeanService;
+import org.seerc.ws.HelloWorldWS;
+import org.seerc.ws.HelloWorldWSService;
 
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
@@ -82,7 +81,7 @@ public class HomeController {
 
     private OWLOntology ssnOntology;
 
-    private WebServiceBean port;
+    private HelloWorldWS port;
 
     private OWLDataFactory factory;
 
@@ -212,10 +211,8 @@ public class HomeController {
      */
     public void initWebService() {
 
-        URL wsdlURL = WebServiceBeanService.WSDL_LOCATION;
-        WebServiceBeanService service =
-                new WebServiceBeanService(wsdlURL, SERVICE_NAME);
-        port = service.getWebServiceBeanPort();
+        HelloWorldWSService service = new HelloWorldWSService();
+        port = service.getHelloWorldWSPort();
     }
 
     /**
@@ -235,7 +232,7 @@ public class HomeController {
                     for (int i = 0; i < aNumberOfInvocations; i++) {
 
                         long time = System.currentTimeMillis();
-                        String result = port.generateHash("TEST STRING");
+                        String result = port.getHelloWorld();
                         time = System.currentTimeMillis() - time;
                         logger.info(result + " in " + String.valueOf(time)
                                 + " milliseconds");
