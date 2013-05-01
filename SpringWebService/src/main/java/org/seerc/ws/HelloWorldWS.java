@@ -1,9 +1,10 @@
-package com.mkyong.ws;
+package org.seerc.ws;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 
-import com.mkyong.bo.HelloWorldBo;
+import org.seerc.bo.HelloWorldBo;
+
 
 @WebService
 public class HelloWorldWS{

@@ -18,10 +18,10 @@
     </wss:binding>
 
     <!-- Web service methods -->
-    <bean id="helloWs" class="com.mkyong.ws.HelloWorldWS">
+    <bean id="helloWs" class="org.seerc.ws.HelloWorldWS">
     	<property name="helloWorldBo" ref="HelloWorldBo" />
     </bean>
     
-    <bean id="HelloWorldBo" class="com.mkyong.bo.impl.HelloWorldBoImpl" />
+    <bean id="HelloWorldBo" class="org.seerc.bo.impl.HelloWorldBoImpl" />
     
 </beans>

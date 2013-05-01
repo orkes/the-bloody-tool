@@ -1,4 +1,4 @@
-package com.mkyong.bo;
+package org.seerc.bo;
 
 public interface HelloWorldBo{
 
