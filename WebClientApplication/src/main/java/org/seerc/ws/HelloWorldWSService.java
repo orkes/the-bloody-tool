@@ -28,7 +28,7 @@ public class HelloWorldWSService extends Service {
             baseUrl = org.seerc.ws.HelloWorldWSService.class.getResource(".");
             url =
                     new URL(baseUrl,
-                            "http://rustem-web-service.cloudfoundry.com/hello?wsdl");
+                            "http://rustem-web-service.cfapps.io/hello?wsdl");
         } catch (MalformedURLException e) {
             logger.warning("Failed to create URL for the wsdl Location: 'http://rustem-web-service.cfapps.io/hello?wsdl', retrying as a local file");
             logger.warning(e.getMessage());
