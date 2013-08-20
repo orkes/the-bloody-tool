@@ -28,7 +28,8 @@
 	<!-- <beans:bean id="messageConverter" class="org.springframework.amqp.support.converter.JsonMessageConverter"/> -->
 
 	<!-- Obtain a connection to the RabbitMQ via cloudfoundry-runtime: -->
-	<cloud:rabbit-connection-factory id="connectionFactory" />
+	<!--  <cloud:rabbit-connection-factory id="connectionFactory" />-->
+	<rabbit:connection-factory id="connectionFactory" /> 
 
 	<!-- Set up the AmqpTemplate/RabbitTemplate: -->
 	<rabbit:template connection-factory="connectionFactory"/>
