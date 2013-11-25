@@ -317,7 +317,8 @@ public class MessagingManager {
 
         // TODO a real criteria to prevent the service from infinitely switching
         // between services
-        if ((System.currentTimeMillis() - _timestamp) > (Constants.THOUSAND * Constants.HUNDRED)) {
+        if ((null != _activeTaskChannel)
+                && ((System.currentTimeMillis() - _timestamp) > (Constants.THOUSAND * Constants.HUNDRED))) {
             if (_cloudAmqpTaskChannel == _activeTaskChannel) {
                 _activeTaskChannel = _bigwigTaskChannel;
             } else {
@@ -381,6 +382,45 @@ public class MessagingManager {
             LOGGER.error("Error accessing the messaging channel!", e);
         }
         return 0;
+    }
+
+    /**
+     * Purge the client-monitor queues
+     */
+    public void purgeClientMonitorQueue() {
+        try {
+            _clientMonitorChannel.queuePurge(Constants.CLIENT_MONITOR_QUEUE);
+            _clientMonitorChannel
+                    .queuePurge(Constants.CLIENT_MONITOR_FEEDBACK_QUEUE);
+        } catch (IOException e) {
+            LOGGER.error("Error when purging the client-monitor queues!", e);
+        }
+    }
+
+    /**
+     * Purge the worker-monitor queues
+     */
+    public void purgeWorkerMonitorQueue() {
+        try {
+            _workerMonitorChannel.queuePurge(Constants.WORKER_MONITOR_QUEUE);
+            _workerMonitorChannel
+                    .queuePurge(Constants.WORKER_MONITOR_FEEDBACK_QUEUE);
+        } catch (IOException e) {
+            LOGGER.error("Error when purging the worker-monitor queues!", e);
+        }
+    }
+
+    /**
+     * Purge the task queues
+     */
+    public void purgeTaskQueue() {
+        try {
+            _cloudAmqpTaskChannel.queuePurge(Constants.TASK_QUEUE);
+            _bigwigTaskChannel.queuePurge(Constants.TASK_QUEUE);
+        } catch (IOException e) {
+            LOGGER.error("Error when purging the task queue!", e);
+        }
+
     }
 
 }

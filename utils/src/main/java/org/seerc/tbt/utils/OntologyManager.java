@@ -56,7 +56,7 @@ public class OntologyManager {
         }
         _factory = _manager.getOWLDataFactory();
         _pm = (PrefixOWLOntologyFormat) _manager.getOntologyFormat(_ontology);
-        _pm.setDefaultPrefix("http://www.seerc.org/ontologies/mytest.owl#");
+        _pm.setDefaultPrefix(Constants.SEERC_URL);
 
     }
 

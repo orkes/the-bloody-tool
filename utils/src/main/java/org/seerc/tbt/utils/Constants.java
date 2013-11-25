@@ -40,11 +40,11 @@ public class Constants {
 
     /** URI of the main ontology */
     public final static String ONTOLOGY_URI =
-            "https://www.dropbox.com/s/upk05ie1t6x0k49/test.owl#";
+            "https://www.dropbox.com/s/upk05ie1t6x0k49/mytest.owl#";
 
     /** The URI of my ontology */
     public static final String SEERC_URL =
-            "http://www.seerc.org/ontologies/mytest.owl#";
+            "http://seerc.org/ontologies/mytest.owl#";
 
     /** The address of the SSN ontology */
     public static final String BASE_URL = "http://purl.oclc.org/NET/ssnx/ssn#";
