@@ -1,5 +1,8 @@
 package org.seerc.tbt.utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.graph.Triple;
 
@@ -7,6 +10,9 @@ import com.hp.hpl.jena.graph.Triple;
  * Utilities
  */
 public class Utils {
+
+    /** Logger */
+    protected static final Logger LOGGER = LoggerFactory.getLogger(Utils.class);
 
     /**
      * Construct an RDF triple

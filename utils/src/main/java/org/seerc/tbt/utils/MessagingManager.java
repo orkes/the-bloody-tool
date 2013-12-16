@@ -17,12 +17,12 @@ import com.rabbitmq.client.DefaultConsumer;
  */
 public class MessagingManager {
 
-    /** Single ton instance */
-    private static MessagingManager _instance = null;
-
     /** Logger */
     private static final Logger LOGGER = LoggerFactory
             .getLogger(MessagingManager.class);
+
+    /** Single ton instance */
+    private static MessagingManager _instance = null;
 
     /** An instance of CloudAMQP channel for sending monitored values */
     private Channel _clientMonitorChannel;
