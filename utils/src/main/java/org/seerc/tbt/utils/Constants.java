@@ -6,6 +6,13 @@ package org.seerc.tbt.utils;
 public class Constants {
 
     /** Name of the monitoring queue */
+    public final static String MONITOR_QUEUE = "monitor.queue";
+
+    /** Name of the monitoring queue */
+    public final static String MONITOR_FEEDBACK_QUEUE =
+            "monitor.feedback.queue";
+
+    /** Name of the monitoring queue */
     public final static String CLIENT_MONITOR_QUEUE = "client.monitor.queue";
 
     /** Name of the monitoring queue */
@@ -43,7 +50,7 @@ public class Constants {
             "amqp://yGO5zjrp:H6voXgeHCBvQgZvFsz5WQzIQvzHYl3lF@lean-thunder-12.bigwig.lshift.net:10693/ZzCEPvxmyW_D";
 
     /** RabbitMQ Bigwig monitoring host URI (for publishing only!) */
-    public final static String BIGWIG_MONTORING_PUBLISH_HOST =
+    public final static String BIGWIG_MONITORING_PUBLISH_HOST =
             "amqp://wS1xGpmf:IrOoQpkyUwG1E-H4QHU-Ae6ydDzEEU1X@white-coltsfoot-20.bigwig.lshift.net:10728/d2S82rvynciz";
 
     /** RabbitMQ Bigwig monitoring host URI (for consuming only!) */

@@ -24,6 +24,12 @@ public class MessagingManager {
     /** Single ton instance */
     private static MessagingManager _instance = null;
 
+    /** An instance of Bigwig channel for sending monitored values */
+    private Channel _monitorPublishChannel;
+
+    /** An instance of Bigwig channel for consuming monitored values */
+    private Channel _monitorConsumeChannel;
+
     /** An instance of CloudAMQP channel for sending monitored values */
     private Channel _clientMonitorChannel;
 
@@ -102,6 +108,63 @@ public class MessagingManager {
                         }
                     });
         }
+
+    }
+
+    /**
+     * Initialize access to the Bigwig service for monitoring (publishing only)
+     * 
+     * @throws IOException exception
+     */
+    public void initBigwigMonitorPublishing() throws IOException {
+
+        String uri = Constants.BIGWIG_MONITORING_PUBLISH_HOST;
+
+        ConnectionFactory factory = new ConnectionFactory();
+
+        try {
+            factory.setUri(uri);
+        } catch (Exception e) {
+            LOGGER.error("Error while setting the URI for the queue service!",
+                    e);
+        }
+
+        Connection connection = factory.newConnection();
+        _monitorPublishChannel = connection.createChannel();
+        _monitorPublishChannel.queueDeclare(Constants.CLIENT_MONITOR_QUEUE,
+                false, false, false, null);
+
+        _monitorPublishChannel.queueDeclare(
+                Constants.CLIENT_MONITOR_FEEDBACK_QUEUE, false, false, false,
+                null);
+
+    }
+
+    /**
+     * Initialize access to the Bigwig service for monitoring (consuming only)
+     * 
+     * @throws IOException exception
+     */
+    public void initBigwigMonitorConsuming() throws IOException {
+
+        String uri = Constants.BIGWIG_MONITORING_CONSUME_HOST;
+
+        ConnectionFactory factory = new ConnectionFactory();
+
+        try {
+            factory.setUri(uri);
+        } catch (Exception e) {
+            LOGGER.error("Error while setting the URI for the queue service!",
+                    e);
+        }
+
+        Connection connection = factory.newConnection();
+        _monitorConsumeChannel = connection.createChannel();
+        _monitorConsumeChannel.queueDeclare(Constants.MONITOR_QUEUE, false,
+                false, false, null);
+
+        _monitorConsumeChannel.queueDeclare(Constants.MONITOR_FEEDBACK_QUEUE,
+                false, false, false, null);
 
     }
 
@@ -283,7 +346,37 @@ public class MessagingManager {
      * 
      * @param aMessage message to be sent
      */
-    public void sendToMonitoringFeedbackQueue(String aMessage) {
+    public void sendToClientMonitorFeedbackQueue(String aMessage) {
+        try {
+            _clientMonitorChannel.basicPublish("",
+                    Constants.CLIENT_MONITOR_FEEDBACK_QUEUE, null,
+                    aMessage.getBytes());
+        } catch (IOException e) {
+            LOGGER.error("Error sending he message to the monitoring queue!", e);
+        }
+    }
+
+    /**
+     * Send a message to the client-monitor queue
+     * 
+     * @param aMessage message to be sent
+     */
+    public void sendToMonitorQueue(String aMessage) {
+        try {
+            _clientMonitorChannel.basicPublish("",
+                    Constants.CLIENT_MONITOR_QUEUE, null, aMessage.getBytes());
+        } catch (IOException e) {
+            LOGGER.error(
+                    "Error sending he message to the client-monitor queue!", e);
+        }
+    }
+
+    /**
+     * Send messages to the monitoring queue
+     * 
+     * @param aMessage message to be sent
+     */
+    public void sendToMonitorFeedbackQueue(String aMessage) {
         try {
             _clientMonitorChannel.basicPublish("",
                     Constants.CLIENT_MONITOR_FEEDBACK_QUEUE, null,
