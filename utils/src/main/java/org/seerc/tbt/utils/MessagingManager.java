@@ -162,7 +162,6 @@ public class MessagingManager {
         _monitorConsumeChannel = connection.createChannel();
         _monitorConsumeChannel.queueDeclare(Constants.MONITOR_QUEUE, false,
                 false, false, null);
-
         _monitorConsumeChannel.queueDeclare(Constants.MONITOR_FEEDBACK_QUEUE,
                 false, false, false, null);
 
@@ -363,11 +362,10 @@ public class MessagingManager {
      */
     public void sendToMonitorQueue(String aMessage) {
         try {
-            _clientMonitorChannel.basicPublish("",
-                    Constants.CLIENT_MONITOR_QUEUE, null, aMessage.getBytes());
+            _monitorPublishChannel.basicPublish("", Constants.MONITOR_QUEUE,
+                    null, aMessage.getBytes());
         } catch (IOException e) {
-            LOGGER.error(
-                    "Error sending he message to the client-monitor queue!", e);
+            LOGGER.error("Error sending he message to the monitoring queue!", e);
         }
     }
 
@@ -378,11 +376,13 @@ public class MessagingManager {
      */
     public void sendToMonitorFeedbackQueue(String aMessage) {
         try {
-            _clientMonitorChannel.basicPublish("",
-                    Constants.CLIENT_MONITOR_FEEDBACK_QUEUE, null,
-                    aMessage.getBytes());
+            _monitorPublishChannel
+                    .basicPublish("", Constants.MONITOR_FEEDBACK_QUEUE, null,
+                            aMessage.getBytes());
         } catch (IOException e) {
-            LOGGER.error("Error sending he message to the monitoring queue!", e);
+            LOGGER.error(
+                    "Error sending he message to the monitoring feedback queue!",
+                    e);
         }
     }
 

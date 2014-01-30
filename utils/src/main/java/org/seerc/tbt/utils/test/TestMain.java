@@ -30,6 +30,18 @@ public class TestMain {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        mm.sendToMonitorQueue("Hello World!1");
+        mm.sendToMonitorQueue("Hello World!2");
+        mm.sendToMonitorQueue("Hello World!3");
+        mm.sendToMonitorQueue("Hello World!4");
+
+        try {
+            Thread.currentThread();
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         System.out.println("DONE!");
 
     }
