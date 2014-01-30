@@ -225,7 +225,7 @@ public class MessagingManager {
      */
     public void initBigwigTaskMessaging() throws IOException {
 
-        String uri = Constants.BIGWIG_TASK_HOST;
+        String uri = Constants.BIGWIG_TASK_PUBLISH_HOST;
         // System.getenv("CLOUDAMQP_URL");
         // if (uri == null) {
         // uri = "amqp://guest:guest@localhost";

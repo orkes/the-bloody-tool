@@ -34,9 +34,21 @@ public class Constants {
     public final static String CLOUD_AMQP_TASK_HOST =
             "amqp://cbepcvrn:DPvJcB9qP0A9OlCD0_AOZH6Ca2XvnPWR@lemur.cloudamqp.com/cbepcvrn";
 
-    /** RabbitMQ Bigwig host URI (for sending only!) */
-    public final static String BIGWIG_TASK_HOST =
+    /** RabbitMQ Bigwig task host URI (for publishing only!) */
+    public final static String BIGWIG_TASK_PUBLISH_HOST =
             "amqp://yGO5zjrp:H6voXgeHCBvQgZvFsz5WQzIQvzHYl3lF@lean-thunder-12.bigwig.lshift.net:10692/ZzCEPvxmyW_D";
+
+    /** RabbitMQ Bigwig task host URI (for consuming only!) */
+    public final static String BIGWIG_TASK_CONSUME_HOST =
+            "amqp://yGO5zjrp:H6voXgeHCBvQgZvFsz5WQzIQvzHYl3lF@lean-thunder-12.bigwig.lshift.net:10693/ZzCEPvxmyW_D";
+
+    /** RabbitMQ Bigwig monitoring host URI (for publishing only!) */
+    public final static String BIGWIG_MONTORING_PUBLISH_HOST =
+            "amqp://wS1xGpmf:IrOoQpkyUwG1E-H4QHU-Ae6ydDzEEU1X@white-coltsfoot-20.bigwig.lshift.net:10728/d2S82rvynciz";
+
+    /** RabbitMQ Bigwig monitoring host URI (for consuming only!) */
+    public final static String BIGWIG_MONITORING_CONSUME_HOST =
+            "amqp://wS1xGpmf:IrOoQpkyUwG1E-H4QHU-Ae6ydDzEEU1X@white-coltsfoot-20.bigwig.lshift.net:10729/d2S82rvynciz";
 
     /** URI of the main ontology */
     public final static String ONTOLOGY_URI =

@@ -1,36 +1,20 @@
 package org.seerc.tbt.utils;
 
 import java.util.Iterator;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.semanticweb.owlapi.apibinding.OWLManager;
-import org.semanticweb.owlapi.model.AddAxiom;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClass;
-import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
-import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLDataProperty;
-import org.semanticweb.owlapi.model.OWLDataPropertyAssertionAxiom;
-import org.semanticweb.owlapi.model.OWLDataPropertyExpression;
 import org.semanticweb.owlapi.model.OWLIndividual;
-import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
-import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
-import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
-import org.semanticweb.owlapi.reasoner.SimpleConfiguration;
 import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.clarkparsia.pellet.owlapiv3.PelletReasoner;
-import com.clarkparsia.pellet.owlapiv3.PelletReasonerFactory;
-import com.hp.hpl.jena.graph.Node;
-import com.hp.hpl.jena.sparql.util.NodeFactory;
 
 /**
  * Class for managing the ontology
@@ -56,12 +40,6 @@ public class OntologyManager {
     /** Prefix */
     private PrefixOWLOntologyFormat _pm = null;
 
-    /** Pellet reasoner factory */
-    private final PelletReasonerFactory _reasonerFactory;
-
-    /** Pellet reasoner */
-    private final PelletReasoner _reasoner;
-
     /**
      * Constructor
      */
@@ -77,10 +55,10 @@ public class OntologyManager {
         } catch (OWLOntologyCreationException e) {
             LOGGER.error("Could not load an ontology!", e);
         }
-        _reasonerFactory = PelletReasonerFactory.getInstance();
-        _reasoner =
-                _reasonerFactory.createReasoner(_ontology,
-                        new SimpleConfiguration());
+        // _reasonerFactory = PelletReasonerFactory.getInstance();
+        // _reasoner =
+        // _reasonerFactory.createReasoner(_ontology,
+        // new SimpleConfiguration());
         _factory = _manager.getOWLDataFactory();
         _pm = (PrefixOWLOntologyFormat) _manager.getOntologyFormat(_ontology);
         _pm.setDefaultPrefix(Constants.SEERC_URL);
@@ -233,96 +211,6 @@ public class OntologyManager {
                 _factory.getOWLObjectProperty(IRI
                         .create("http://www.w3.org/1999/02/22-rdf-syntax-ns#type"));
         return property;
-    }
-
-    /**
-     * Adds a class assertion axiom to the ontology
-     * 
-     * @param aClass OWL class expression
-     * @param aIndividual OWL individual
-     */
-    public void addClassAssertion(OWLClassExpression aClass,
-            OWLIndividual aIndividual) {
-        OWLClassAssertionAxiom classAssertion =
-                _factory.getOWLClassAssertionAxiom(aClass, aIndividual);
-        _manager.applyChange(new AddAxiom(_ontology, classAssertion));
-
-    }
-
-    /**
-     * Adds a object property assertion axiom to the ontology
-     * 
-     * @param aSubject OWL individual - subject
-     * @param aPredicate OWL object property expression - predicate
-     * @param aObject OWL individual - object
-     */
-    public void addObjectPropertyAssertion(OWLIndividual aSubject,
-            OWLObjectPropertyExpression aPredicate, OWLIndividual aObject) {
-        OWLObjectPropertyAssertionAxiom objectPropertyAssertion =
-                _factory.getOWLObjectPropertyAssertionAxiom(aPredicate,
-                        aSubject, aObject);
-        _manager.applyChange(new AddAxiom(_ontology, objectPropertyAssertion));
-
-    }
-
-    /**
-     * Adds a object property assertion axiom to the ontology
-     * 
-     * @param aSubject OWL individual - subject
-     * @param aPredicate OWL object property expression - predicate
-     * @param aObject OWL individual - object
-     */
-    public void addDataPropertyAssertion(OWLIndividual aSubject,
-            OWLDataPropertyExpression aPredicate, String aObject) {
-
-        OWLDataPropertyAssertionAxiom dataPropertyAssertion =
-                _factory.getOWLDataPropertyAssertionAxiom(aPredicate, aSubject,
-                        toOWLLiteral(aObject));
-        _manager.applyChange(new AddAxiom(_ontology, dataPropertyAssertion));
-
-    }
-
-    /**
-     * Synchronises the reasoner with all changes made to the ontology
-     */
-    public void synchroniseReasoner() {
-        _reasoner.flush();
-    }
-
-    /**
-     * Just a function to extract a number
-     * 
-     * @param aString input string
-     * @return an integer number
-     */
-    public OWLLiteral toOWLLiteral(String aString) {
-
-        OWLLiteral literal = null;
-        Node node = NodeFactory.parseNode(aString);
-        if (node.isLiteral()) {
-            IRI iri = IRI.create(node.getLiteralDatatypeURI());
-            literal =
-                    _factory.getOWLLiteral(node.getLiteralLexicalForm(),
-                            _factory.getOWLDatatype(iri));
-
-        }
-        return literal;
-    }
-
-    /**
-     * Just a function to extract a number
-     * 
-     * @param aString input string
-     * @return an integer number
-     */
-    public int extractNumber(String aString) {
-
-        Pattern p = Pattern.compile("\\d+");
-        Matcher m = p.matcher(aString);
-        if (m.find()) {
-            return Integer.valueOf(m.group()).intValue();
-        }
-        return 0;
     }
 
 }

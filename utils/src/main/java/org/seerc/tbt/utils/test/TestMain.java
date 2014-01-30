@@ -17,7 +17,7 @@ public class TestMain {
 
         OntologyManager oManager = OntologyManager.getInstance();
 
-        OWLLiteral literal = oManager.toOWLLiteral(string);
+        // OWLLiteral literal = oManager.toOWLLiteral(string);
 
     }
 
