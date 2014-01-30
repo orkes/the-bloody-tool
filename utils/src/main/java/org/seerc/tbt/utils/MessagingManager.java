@@ -428,6 +428,15 @@ public class MessagingManager {
      * 
      * @return the client-monitor channel
      */
+    public Channel getMonitorConsumeChannel() {
+        return _monitorConsumeChannel;
+    }
+
+    /**
+     * Returns the client-monitor channel
+     * 
+     * @return the client-monitor channel
+     */
     public Channel getClientMonitorChannel() {
         return _clientMonitorChannel;
     }
