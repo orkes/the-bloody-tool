@@ -39,7 +39,7 @@ public class Constants {
 
     /** CloudAMQP task host URI */
     public final static String CLOUD_AMQP_TASK_HOST =
-            "amqp://cbepcvrn:DPvJcB9qP0A9OlCD0_AOZH6Ca2XvnPWR@lemur.cloudamqp.com/cbepcvrn";
+            "amqp://dbcslueu:UZzSVnwdPV_6G3VxuOl-pVjR2BtyYLxV@lemur.cloudamqp.com/dbcslueu";
 
     /** RabbitMQ Bigwig task host URI (for publishing only!) */
     public final static String BIGWIG_TASK_PUBLISH_HOST =

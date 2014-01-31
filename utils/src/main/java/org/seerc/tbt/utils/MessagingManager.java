@@ -8,9 +8,6 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.AMQP.Queue.DeclareOk;
-import com.rabbitmq.client.AMQP.BasicProperties;
-import com.rabbitmq.client.Envelope;
-import com.rabbitmq.client.DefaultConsumer;
 
 /**
  * Manager class for managing all messaging-related activities.
@@ -29,12 +26,6 @@ public class MessagingManager {
 
     /** An instance of Bigwig channel for consuming monitored values */
     private Channel _monitorConsumeChannel;
-
-    /** An instance of CloudAMQP channel for sending monitored values */
-    private Channel _clientMonitorChannel;
-
-    /** An instance of CloudAMQP channel for sending monitored values */
-    private Channel _workerMonitorChannel;
 
     /** An instance of the CloudAMQP channel for sending jobs */
     private Channel _cloudAmqpTaskChannel;
@@ -63,52 +54,6 @@ public class MessagingManager {
             _instance = new MessagingManager();
         }
         return _instance;
-    }
-
-    /**
-     * Initialize access to the CloudAMQP service for monitoring
-     * 
-     * @param aClient flag to specify if it is the client and should listen to
-     *            the feedback from the monitor
-     * @throws IOException exception
-     */
-    public void initClientMonitorMessaging(boolean aClient) throws IOException {
-
-        String uri = Constants.CLIENT_MONITOR_QUEUE_HOST;
-
-        ConnectionFactory factory = new ConnectionFactory();
-
-        try {
-            factory.setUri(uri);
-        } catch (Exception e) {
-            LOGGER.error("Error while setting the URI for the queue service!",
-                    e);
-        }
-
-        Connection connection = factory.newConnection();
-        _clientMonitorChannel = connection.createChannel();
-        _clientMonitorChannel.queueDeclare(Constants.CLIENT_MONITOR_QUEUE,
-                false, false, false, null);
-
-        _clientMonitorChannel.queueDeclare(
-                Constants.CLIENT_MONITOR_FEEDBACK_QUEUE, false, false, false,
-                null);
-
-        if (aClient) {
-            _clientMonitorChannel.basicConsume(
-                    Constants.CLIENT_MONITOR_FEEDBACK_QUEUE, true,
-                    new DefaultConsumer(_clientMonitorChannel) {
-
-                        @Override
-                        public void handleDelivery(String aConsumerTag,
-                                Envelope aEnvelope,
-                                BasicProperties aProperties, byte[] aBody)
-                                throws IOException {
-                            changeActiveMessagingService();
-                        }
-                    });
-        }
-
     }
 
     /**
@@ -164,88 +109,6 @@ public class MessagingManager {
                 false, false, null);
         _monitorConsumeChannel.queueDeclare(Constants.MONITOR_FEEDBACK_QUEUE,
                 false, false, false, null);
-
-    }
-
-    /**
-     * Initialize access to the CloudAMQP service for feedback from monitoring
-     * 
-     * @throws IOException exception
-     */
-    public void initClientMonitorFeedbackMessaging() throws IOException {
-
-        String uri = Constants.CLIENT_MONITOR_QUEUE_HOST;
-
-        ConnectionFactory factory = new ConnectionFactory();
-
-        try {
-            factory.setUri(uri);
-        } catch (Exception e) {
-            LOGGER.error("Error while setting the URI for the queue service!",
-                    e);
-        }
-
-        Connection connection = factory.newConnection();
-        _clientMonitorChannel = connection.createChannel();
-        _clientMonitorChannel.queueDeclare(Constants.CLIENT_MONITOR_QUEUE,
-                false, false, false, null);
-
-        _clientMonitorChannel.queueDeclare(
-                Constants.CLIENT_MONITOR_FEEDBACK_QUEUE, false, false, false,
-                null);
-
-        _clientMonitorChannel.basicConsume(
-                Constants.CLIENT_MONITOR_FEEDBACK_QUEUE, true,
-                new DefaultConsumer(_clientMonitorChannel) {
-
-                    @Override
-                    public void handleDelivery(String aConsumerTag,
-                            Envelope aEnvelope, BasicProperties aProperties,
-                            byte[] aBody) throws IOException {
-                        changeActiveMessagingService();
-                    }
-                });
-
-    }
-
-    /**
-     * Initialize access to the CloudAMQP service for monitoring
-     * 
-     * @throws IOException exception
-     */
-    public void initWorkerMonitorMessaging() throws IOException {
-
-        String uri = Constants.WORKER_MONITOR_QUEUE_HOST;
-
-        ConnectionFactory factory = new ConnectionFactory();
-
-        try {
-            factory.setUri(uri);
-        } catch (Exception e) {
-            LOGGER.error("Error while setting the URI for the queue service!",
-                    e);
-        }
-
-        Connection connection = factory.newConnection();
-        _workerMonitorChannel = connection.createChannel();
-        _workerMonitorChannel.queueDeclare(Constants.WORKER_MONITOR_QUEUE,
-                false, false, false, null);
-
-        _workerMonitorChannel.queueDeclare(
-                Constants.WORKER_MONITOR_FEEDBACK_QUEUE, false, false, false,
-                null);
-
-        // _monitorChannel.basicConsume(Constants.MONITOR_FEEDBACK_QUEUE, true,
-        // new DefaultConsumer(_monitorChannel) {
-        //
-        // @Override
-        // public void handleDelivery(String aConsumerTag,
-        // Envelope aEnvelope,
-        // AMQP.BasicProperties aProperties, byte[] aBody)
-        // throws IOException {
-        // changeActiveMessagingService();
-        // }
-        // });
 
     }
 
@@ -308,51 +171,8 @@ public class MessagingManager {
         _bigwigTaskChannel.queueDeclare(Constants.TASK_QUEUE, false, false,
                 false, null);
 
-    }
+        // _activeTaskChannel = _bigwigTaskChannel;
 
-    /**
-     * Send a message to the client-monitor queue
-     * 
-     * @param aMessage message to be sent
-     */
-    public void sendToClientMonitorQueue(String aMessage) {
-        try {
-            _clientMonitorChannel.basicPublish("",
-                    Constants.CLIENT_MONITOR_QUEUE, null, aMessage.getBytes());
-        } catch (IOException e) {
-            LOGGER.error(
-                    "Error sending he message to the client-monitor queue!", e);
-        }
-    }
-
-    /**
-     * Send a message to the client-monitor queue
-     * 
-     * @param aMessage message to be sent
-     */
-    public void sendToWorkerMonitorQueue(String aMessage) {
-        try {
-            _workerMonitorChannel.basicPublish("",
-                    Constants.WORKER_MONITOR_QUEUE, null, aMessage.getBytes());
-        } catch (IOException e) {
-            LOGGER.error(
-                    "Error sending he message to the worker-monitor queue!", e);
-        }
-    }
-
-    /**
-     * Send messages to the monitoring queue
-     * 
-     * @param aMessage message to be sent
-     */
-    public void sendToClientMonitorFeedbackQueue(String aMessage) {
-        try {
-            _clientMonitorChannel.basicPublish("",
-                    Constants.CLIENT_MONITOR_FEEDBACK_QUEUE, null,
-                    aMessage.getBytes());
-        } catch (IOException e) {
-            LOGGER.error("Error sending he message to the monitoring queue!", e);
-        }
     }
 
     /**
@@ -433,24 +253,6 @@ public class MessagingManager {
     }
 
     /**
-     * Returns the client-monitor channel
-     * 
-     * @return the client-monitor channel
-     */
-    public Channel getClientMonitorChannel() {
-        return _clientMonitorChannel;
-    }
-
-    /**
-     * Returns the worker-monitor channel
-     * 
-     * @return the worker-monitor channel
-     */
-    public Channel getWorkerMonitorChannel() {
-        return _workerMonitorChannel;
-    }
-
-    /**
      * Returns the Cloud AMQP task channel
      * 
      * @return the Cloud AMQP task channel
@@ -466,6 +268,15 @@ public class MessagingManager {
      */
     public Channel getBigwigTaskChannel() {
         return _bigwigTaskChannel;
+    }
+
+    /**
+     * Returns the active task channel
+     * 
+     * @return the active task channel
+     */
+    public Channel getActiveTaskChannel() {
+        return _activeTaskChannel;
     }
 
     /**
@@ -487,28 +298,18 @@ public class MessagingManager {
     }
 
     /**
-     * Purge the client-monitor queues
+     * Purge the monitor queues
      */
-    public void purgeClientMonitorQueue() {
+    public void purgeMonitorQueue() {
         try {
-            _clientMonitorChannel.queuePurge(Constants.CLIENT_MONITOR_QUEUE);
-            _clientMonitorChannel
-                    .queuePurge(Constants.CLIENT_MONITOR_FEEDBACK_QUEUE);
+            _monitorPublishChannel.queuePurge(Constants.MONITOR_QUEUE);
+            _monitorPublishChannel.queuePurge(Constants.MONITOR_FEEDBACK_QUEUE);
+
+            _monitorConsumeChannel.queuePurge(Constants.MONITOR_QUEUE);
+            _monitorConsumeChannel.queuePurge(Constants.MONITOR_FEEDBACK_QUEUE);
+
         } catch (IOException e) {
             LOGGER.error("Error when purging the client-monitor queues!", e);
-        }
-    }
-
-    /**
-     * Purge the worker-monitor queues
-     */
-    public void purgeWorkerMonitorQueue() {
-        try {
-            _workerMonitorChannel.queuePurge(Constants.WORKER_MONITOR_QUEUE);
-            _workerMonitorChannel
-                    .queuePurge(Constants.WORKER_MONITOR_FEEDBACK_QUEUE);
-        } catch (IOException e) {
-            LOGGER.error("Error when purging the worker-monitor queues!", e);
         }
     }
 
