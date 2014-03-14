@@ -1,0 +1,78 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.seerc.tbt</groupId>
+	<artifactId>worker</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	
+	<repositories>
+		<!--other repositories if any -->
+		<repository>
+			<id>project.local</id>
+			<name>project</name>
+			<url>file:${project.basedir}/repo</url>
+		</repository>
+	</repositories>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.2</version>
+				<!-- nothing here -->
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.2-beta-4</version>
+				<configuration>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+					<archive>
+						<manifest>
+							<mainClass>org.seerc.tbt.destinator.worker.SaveWorker</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>io.iron.ironmq</groupId>
+			<artifactId>ironmq</artifactId>
+			<version>0.0.14</version>
+		</dependency>
+        <dependency>
+            <groupId>io.iron.ironworker</groupId>
+            <artifactId>ironworker</artifactId>
+            <version>1.0.2</version>
+        </dependency>
+        <dependency>
+        	<groupId>log4j</groupId>
+        	<artifactId>log4j</artifactId>
+        	<version>1.2.17</version>
+        </dependency>
+        <dependency>
+        	<groupId>com.logentries</groupId>
+        	<artifactId>logentries-appender</artifactId>
+        	<version>1.1.20</version>
+        </dependency>
+        <dependency>
+        	<groupId>org.seerc.tbt</groupId>
+        	<artifactId>destinator</artifactId>
+        	<version>1.0-SNAPSHOT</version>
+        </dependency>
+	</dependencies>
+</project>
