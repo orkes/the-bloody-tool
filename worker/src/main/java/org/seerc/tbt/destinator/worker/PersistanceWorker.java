@@ -11,16 +11,16 @@ import java.nio.charset.Charset;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.hibernate.Session;
 import org.seerc.tbt.destinator.beans.Destination;
+import org.seerc.tbt.destinator.persistance.SessionFactoryUtil;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 /**
  * Worker class for saving destinations
  */
-public class SaveWorker {
+public class PersistanceWorker {
 
     /** Logger */
     private static Logger _logger = LogManager.getRootLogger();
@@ -33,7 +33,7 @@ public class SaveWorker {
     public static void main(String[] aArgs) {
 
         for (String arg : aArgs) {
-            System.out.println(arg);
+            _logger.info(arg);
         }
 
         // obtain the filename from the passed arguments
@@ -70,9 +70,14 @@ public class SaveWorker {
         // print the output of the "arg1" property of the passed JSON object
         Destination destination = gson.fromJson(payload, Destination.class);
 
-        _logger.info("Saving destination: " + destination.toString());
+        Session session =
+                SessionFactoryUtil.getSessionFactory().getCurrentSession();
 
-        // TODO save
+        session.beginTransaction();
+        session.merge(destination);
+        session.getTransaction().commit();
+
+        _logger.info("Saved destination: " + destination.toString());
     }
 
     /**
