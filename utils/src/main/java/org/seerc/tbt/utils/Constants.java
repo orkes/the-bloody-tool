@@ -57,13 +57,21 @@ public class Constants {
     public final static String BIGWIG_MONITORING_CONSUME_HOST =
             "amqp://wS1xGpmf:IrOoQpkyUwG1E-H4QHU-Ae6ydDzEEU1X@white-coltsfoot-20.bigwig.lshift.net:10729/d2S82rvynciz";
 
-    /** URI of the main ontology */
+    /** Web URL of the main ontology */
     public final static String ONTOLOGY_URI =
-            "https://www.dropbox.com/s/upk05ie1t6x0k49/mytest.owl#";
+            "https://www.dropbox.com/s/ss4642mfzt0cktk/ontology.owl#";
 
-    /** The URI of my ontology */
+    /** Web URL of the rules */
+    public final static String RULES_URI =
+            "https://www.dropbox.com/s/q4vyi7lyiwd4p53/rules.owl#";
+
+    /** URI of my ontology */
     public static final String SEERC_URL =
-            "http://seerc.org/ontologies/mytest.owl#";
+            "http://seerc.org/ontologies/ontology.owl#";
+
+    /** URI of my rules */
+    public static final String SEERC_RULES_URL =
+            "http://seerc.org/ontologies/rules.owl#";
 
     /** The address of the SSN ontology */
     public static final String BASE_URL = "http://purl.oclc.org/NET/ssnx/ssn#";

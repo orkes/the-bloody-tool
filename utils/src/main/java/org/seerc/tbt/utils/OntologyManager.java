@@ -103,7 +103,7 @@ public class OntologyManager {
         _manager = OWLManager.createOWLOntologyManager();
         // TODO move to constants
         IRI iri =
-                IRI.create("https://www.dropbox.com/s/v8d85befvh7x0h2/mytest.owl?dl=1");
+                IRI.create("https://www.dropbox.com/s/ss4642mfzt0cktk/ontology.owl?dl=1");
         try {
             _ontology = _manager.loadOntologyFromOntologyDocument(iri);
             LOGGER.info("Loaded ontology: " + _ontology);
