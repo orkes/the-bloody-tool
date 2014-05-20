@@ -1,0 +1,111 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-access="field">
+
+<class name="com.restfb.types.Page" table="Page">
+
+<id name="id" column="PAGE_ID">
+<generator class="assigned"/>
+</id>
+
+<property name="metadata">
+<column name="METADATA"  />
+</property>
+
+<property name="type">
+<column name="TYPE" />
+</property>
+
+<property name="name">
+<column name="NAME" not-null="true" />
+</property>
+
+<property name="category">
+<column name="CATEGORY" not-null="true" />
+</property>
+
+<property name="picture">
+<column name="PICTURE" />
+</property>
+
+<property name="link">
+<column name="LINK" />
+</property>
+
+<property name="username">
+<column name="USERNAME" />
+</property>
+
+<property name="founded">
+<column name="FOUNDED" />
+</property>
+
+<property name="companyOverview">
+<column name="COMPANY_OVERVIEW" />
+</property>
+
+<property name="mission">
+<column name="MISSION" />
+</property>
+
+<property name="products">
+<column name="PRODUCTS" />
+</property>
+
+<property name="likes" type="long">
+<column name="LIKES" />
+</property>
+
+<property name="isCommunityPage" type="boolean">
+<column name="IS_COMMUNITY_PAGE" />
+</property>
+
+<property name="description">
+<column name="DESCRIPTION" />
+</property>
+
+<property name="checkins" type="integer">
+<column name="CHECKINS" />
+</property>
+
+<property name="phone">
+<column name="PHONE" />
+</property>
+
+<property name="accessToken">
+<column name="ACCESS_TOKEN" />
+</property>
+
+<property name="about">
+<column name="ABOUT" />
+</property>
+
+<property name="talkingAboutCount" type="long" >
+<column name="TALKING_ABOUT_COUNT" />
+</property>
+
+<property name="canPost" type="boolean" >
+<column name="CAN_POST" />
+</property>
+
+<property name="isPublished" type="boolean" >
+<column name="IS_PIBLISHED" />
+</property>
+
+<property name="generalInfo">
+<column name="GENERAL_INFO" />
+</property>
+
+<property name="location">
+<column name="LOCATION" />
+</property>
+
+<property name="cover">
+<column name="COVER" />
+</property>
+
+</class>
+</hibernate-mapping>

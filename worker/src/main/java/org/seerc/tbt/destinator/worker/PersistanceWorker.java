@@ -1,7 +1,5 @@
 package org.seerc.tbt.destinator.worker;
 
-import io.iron.ironworker.client.Client;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -16,6 +14,8 @@ import org.seerc.tbt.destinator.beans.Destination;
 import org.seerc.tbt.destinator.persistance.SessionFactoryUtil;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 /**
  * Worker class for saving destinations
@@ -24,6 +24,9 @@ public class PersistanceWorker {
 
     /** Logger */
     private static Logger _logger = LogManager.getRootLogger();
+
+    /** Payload flag */
+    private final static String PAYLOAD_FLAG = "-payload";
 
     /**
      * Main
@@ -39,17 +42,17 @@ public class PersistanceWorker {
         // obtain the filename from the passed arguments
         int payloadPos = -1;
         for (int i = 0; i < aArgs.length; i++) {
-            if (aArgs[i].equals("-payload")) {
+            if (aArgs[i].equals(PAYLOAD_FLAG)) {
                 payloadPos = i + 1;
                 break;
             }
         }
         if (payloadPos >= aArgs.length) {
-            System.err.println("Invalid payload argument.");
+            System.err.println("Invalid PAYLOAD_FLAG argument.");
             System.exit(1);
         }
         if (payloadPos == -1) {
-            System.err.println("No payload argument.");
+            System.err.println("No PAYLOAD_FLAG argument.");
             System.exit(1);
         }
 
@@ -62,13 +65,16 @@ public class PersistanceWorker {
             System.exit(1);
         }
 
+        System.out.println(payload);
+
         // parse the string as JSON
         Gson gson = new Gson();
-        // JsonParser parser = new JsonParser();
-        // JsonObject passed_args = parser.parse(payload).getAsJsonObject();
+        JsonParser parser = new JsonParser();
+        JsonObject passed_args = parser.parse(payload).getAsJsonObject();
 
         // print the output of the "arg1" property of the passed JSON object
-        Destination destination = gson.fromJson(payload, Destination.class);
+        String json = passed_args.get("arg1").getAsString();
+        Destination destination = gson.fromJson(json, Destination.class);
 
         Session session =
                 SessionFactoryUtil.getSessionFactory().getCurrentSession();
@@ -77,13 +83,13 @@ public class PersistanceWorker {
         session.merge(destination);
         session.getTransaction().commit();
 
-        _logger.info("Saved destination: " + destination.toString());
+        _logger.info("Saved destination: " + json);
     }
 
     /**
-     * Reads the payload
+     * Reads the PAYLOAD_FLAG
      * 
-     * @param aPath path to the payload
+     * @param aPath path to the PAYLOAD_FLAG
      * @return json object
      * @throws IOException exception
      */

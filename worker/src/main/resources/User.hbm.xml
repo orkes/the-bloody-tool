@@ -1,0 +1,203 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-access="field">
+
+<class name="com.restfb.types.User" table="Users">
+
+<id name="id" column="USER_ID">
+<generator class="assigned"/>
+</id>
+
+<property name="metadata">
+<column name="METADATA" />
+</property>
+
+<property name="type">
+<column name="TYPE" />
+</property>
+
+<property name="firstName">
+<column name="FIRST_NAME" />
+</property>
+
+<property name="middleName">
+<column name="MIDDLE_NAME" />
+</property>
+
+<property name="lastName">
+<column name="LAST_NAME"/>
+</property>
+
+<property name="link">
+<column name="LINK"/>
+</property>
+
+<property name="bio">
+<column name="BIO" />
+</property>
+
+<property name="quotes">
+<column name="QUOTES" />
+</property>
+
+<property name="about">
+<column name="ABOUT" />
+</property>
+
+<property name="relationshipStatus">
+<column name="RELATION_SHIP"/>
+</property>
+
+<property name="religion">
+<column name="RELIGION"/>
+</property>
+
+<property name="website">
+<column name="WEBSITE"/>
+</property>
+
+<property name="birthday">
+<column name="BIRTHDAY" />
+</property>
+
+<property name="email">
+<column name="EMAIL" />
+</property>
+
+<property name="timezone" type="double">
+<column name="TIMEZONE" />
+</property>
+
+<property name="verified" type="boolean">
+<column name="VERIFIED" />
+</property>
+
+<property name="gender">
+<column name="GENDER" />
+</property>
+
+<property name="political">
+<column name="POLITICAL" />
+</property>
+
+<property name="locale">
+<column name="LOCALE" />
+</property>
+
+<property name="username">
+<column name="USERNAME" />
+</property>
+
+<property name="hometown">
+<column name="HOMETOWN" />
+</property>
+
+<property name="hometownAsString">
+<column name="HOMETOWN_AS_STRING" />
+</property>
+
+<property name="location">
+<column name="LOCATION" />
+</property>
+
+<property name="significantOther">
+<column name="SIGNIFICANT_OTHER" />
+</property>
+
+<!-- <property name="updatedTime"> -->
+<!-- <column name="UPDATED_TIME" /> -->
+<!-- </property> -->
+
+<property name="thirdPartyId">
+<column name="THIRD_PARTY_ID" />
+</property>
+
+<property name="currency">
+<column name="CURRENCY" />
+</property>
+
+<!-- <bag name="interestedIn"> -->
+<!-- <column name="INTERESTED_IN" /> -->
+<!-- </bag> -->
+
+<!-- <list name="interestedIn" table="interesed_in">
+<key column="interest_id" />
+<list-index column="index" />
+<element type="text" />
+</list>
+
+<property name="meetingFor">
+<column name="MEETING_FOR" />
+</property>
+
+<list name="meetingFor" table="meeting_for">
+<key column="meeting_for_id" />
+<list-index column="index" />
+<element type="text" />
+</list>
+
+<property name="work">
+<column name="WORK" />
+</property>
+
+<list name="work" table="work">
+<key column="work_id" />
+<list-index column="index" />
+<element type="text" />
+</list>
+
+<property name="education">
+<column name="EDUCATION" />
+</property>
+
+<list name="education" table="education">
+<key column="education_id" />
+<list-index column="index" />
+<element type="text" />
+</list>
+
+<property name="sports">
+<column name="SPORTS" />
+</property>
+
+<list name="sports" table="sports">
+<key column="sports_id" />
+<list-index column="index" />
+<element type="text" />
+</list>
+
+<property name="favoriteTeams">
+<column name="FAVORITE_TEAMS" />
+</property>
+
+<list name="favoriteTeams" table="favorite_teams">
+<key column="favorite_teams_id" />
+<list-index column="index" />
+<element type="text" />
+</list>
+
+<property name="favoriteAthletes">
+<column name="FAVORITE_ATHLETES" />
+</property>
+
+<list name="favoriteAthletes" table="favorite_athletes">
+<key column="favorite_athletes_id" />
+<list-index column="index" />
+<element type="text" />
+</list>
+
+<property name="languages">
+<column name="LANGUAGES" />
+</property>
+
+<list name="languages" table="languages">
+<key column="languages_id" />
+<list-index column="index" />
+<element type="text" />
+</list> -->
+
+</class>
+</hibernate-mapping>

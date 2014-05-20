@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+                                         "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+<session-factory>
+<!-- hibernate dialect -->
+<property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+<property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+<property name="hibernate.connection.url">jdbc:postgresql://ec2-54-197-251-18.compute-1.amazonaws.com:5432/dc29ojgqa0v6ft</property>
+<property name="hibernate.connection.username">punglfjwjoqnnm</property>
+<property name="hibernate.connection.password">g7a6J_Skc-8D_ZTVbM048vYesC</property>
+<!-- <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/postgres</property> -->
+<!-- <property name="hibernate.connection.username">postgres</property>  -->
+<!-- <property name="hibernate.connection.password">password</property>  -->
+
+<property name="transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</property>
+<!-- Automatic schema creation (begin) === -->
+<property name="hibernate.hbm2ddl.auto">update</property>
+<!-- Simple memory-only cache -->
+<property name="hibernate.cache.provider_class">org.hibernate.cache.HashtableCacheProvider</property>
+<!-- Enable Hibernate's automatic session context management -->
+<property name="current_session_context_class">thread</property>
+
+<property name="hibernate.connection.ssl">true</property>
+<property name="hibernate.connection.sslfactory">org.postgresql.ssl.NonValidatingFactory</property>
+
+<!-- Enable Hibernate's mappings -->
+<mapping resource="Destination.hbm.xml" />
+<mapping resource="Page.hbm.xml" />
+<mapping resource="User.hbm.xml" />
+</session-factory>
+</hibernate-configuration>

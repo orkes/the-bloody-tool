@@ -6,15 +6,17 @@ import io.iron.ironworker.client.builders.Params;
 import io.iron.ironworker.client.APIException;
 
 /**
- * 
+ * Test class
  */
 public class Test {
 
     /**
-     * @param args
-     * @throws APIException
+     * Main method
+     * 
+     * @param aArgs args
+     * @throws APIException exception
      */
-    public static void main(String[] args) throws APIException {
+    public static void main(String[] aArgs) throws APIException {
 
         Client client =
                 new Client("vv1kjcZxAOZhDTKJP2e4yj0BKuY",
