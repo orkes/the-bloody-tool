@@ -231,7 +231,7 @@ public class MessagingManager {
         // TODO a real criteria to prevent the service from infinitely switching
         // between services
         if ((null != _activeTaskChannel)
-                && ((System.currentTimeMillis() - _timestamp) > (Constants.THOUSAND * Constants.HUNDRED))) {
+                && ((System.currentTimeMillis() - _timestamp) > (Constants.INT_1000 * Constants.INT_100))) {
             if (_cloudAmqpTaskChannel == _activeTaskChannel) {
                 _activeTaskChannel = _bigwigTaskChannel;
             } else {

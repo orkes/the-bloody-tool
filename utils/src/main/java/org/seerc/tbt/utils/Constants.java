@@ -66,12 +66,10 @@ public class Constants {
             "https://www.dropbox.com/s/q4vyi7lyiwd4p53/rules.owl#";
 
     /** URI of my ontology */
-    public static final String SEERC_URL =
-            "http://seerc.org/ontologies/ontology.owl#";
+    public static final String SEERC_URL = "http://seerc.org/ontology.owl#";
 
     /** URI of my rules */
-    public static final String SEERC_RULES_URL =
-            "http://seerc.org/ontologies/rules.owl#";
+    public static final String SEERC_RULES_URL = "http://seerc.org/rules.owl#";
 
     /** The address of the SSN ontology */
     public static final String BASE_URL = "http://purl.oclc.org/NET/ssnx/ssn#";
@@ -80,24 +78,51 @@ public class Constants {
     public static final String RDF_STREAM = "http://seerc.org/rdf/stream/";
 
     /** Integer value 0 */
-    public static final int ZERO = 0;
+    public static final int INT_0 = 0;
 
     /** Integer value 1 */
-    public static final int ONE = 1;
+    public static final int INT_1 = 1;
 
     /** Integer value 2 */
-    public static final int TWO = 2;
+    public static final int INT_2 = 2;
 
     /** Integer value 5 */
-    public static final int FIVE = 5;
+    public static final int INT_5 = 5;
 
     /** Integer value 10 */
-    public static final int TEN = 10;
+    public static final int INT_10 = 10;
 
     /** Integer value 100 */
-    public static final int HUNDRED = 100;
+    public static final int INT_100 = 100;
 
     /** Integer value 1000 */
-    public static final int THOUSAND = 1000;
+    public static final int INT_1000 = 1000;
+
+    /** Integer value 2000 */
+    public static final int INT_2000 = 2000;
+
+    /** Integer value 3000 */
+    public static final int INT_3000 = 3000;
+
+    /** Integer value 4000 */
+    public static final int INT_4000 = 4000;
+
+    /** Integer value 5000 */
+    public static final int INT_5000 = 5000;
+
+    /** Integer value 6000 */
+    public static final int INT_6000 = 6000;
+
+    /** Integer value 7000 */
+    public static final int INT_7000 = 7000;
+
+    /** Integer value 8000 */
+    public static final int INT_8000 = 8000;
+
+    /** Integer value 9000 */
+    public static final int INT_9000 = 9000;
+
+    /** Integer value 10000 */
+    public static final int INT_10000 = 10000;
 
 }
