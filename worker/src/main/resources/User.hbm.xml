@@ -19,6 +19,10 @@
 <column name="TYPE" />
 </property>
 
+<property name="name">
+<column name="NAME" not-null="true" />
+</property>
+
 <property name="firstName">
 <column name="FIRST_NAME" />
 </property>
