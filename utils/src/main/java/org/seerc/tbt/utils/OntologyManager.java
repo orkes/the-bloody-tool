@@ -29,39 +29,39 @@ public class OntologyManager {
     private static OntologyManager _instance = null;
 
     /** Ontology manager */
-    private OWLOntologyManager _manager = null;
+    protected OWLOntologyManager manager = null;
 
-    /** SSN ontology */
-    private OWLOntology _ontology = null;
+    /** CSO ontology */
+    protected OWLOntology ontology = null;
+
+    /** Rules */
+    protected OWLOntology rules = null;
 
     /** OWL data factory */
-    private OWLDataFactory _factory = null;
+    protected OWLDataFactory factory = null;
 
     /** Prefix */
-    private PrefixOWLOntologyFormat _pm = null;
+    protected PrefixOWLOntologyFormat pm = null;
 
     /**
      * Constructor
      */
     protected OntologyManager() {
 
-        _manager = OWLManager.createOWLOntologyManager();
-        // TODO move to constants
-        IRI iri =
-                IRI.create("https://www.dropbox.com/s/ss4642mfzt0cktk/ontology.owl?dl=1");
+        manager = OWLManager.createOWLOntologyManager();
+        IRI csoIRI = IRI.create(Constants.CSO_URI);
+        IRI rulesIRI = IRI.create(Constants.RULES_URI);
         try {
-            _ontology = _manager.loadOntologyFromOntologyDocument(iri);
-            LOGGER.info("Loaded ontology: " + _ontology);
+            ontology = manager.loadOntologyFromOntologyDocument(csoIRI);
+            rules = manager.loadOntologyFromOntologyDocument(rulesIRI);
+            LOGGER.info("Loaded CSO (" + ontology + ") and rule set (" + rules
+                    + ")");
         } catch (OWLOntologyCreationException e) {
             LOGGER.error("Could not load an ontology!", e);
         }
-        // _reasonerFactory = PelletReasonerFactory.getInstance();
-        // _reasoner =
-        // _reasonerFactory.createReasoner(_ontology,
-        // new SimpleConfiguration());
-        _factory = _manager.getOWLDataFactory();
-        _pm = (PrefixOWLOntologyFormat) _manager.getOntologyFormat(_ontology);
-        _pm.setDefaultPrefix(Constants.SEERC_URL);
+        factory = manager.getOWLDataFactory();
+        pm = (PrefixOWLOntologyFormat) manager.getOntologyFormat(ontology);
+        pm.setDefaultPrefix(Constants.SEERC_URL);
 
     }
 
@@ -83,37 +83,17 @@ public class OntologyManager {
      * @param aURI URI of a new ontology
      */
     public void reloadOntology(String aURI) {
-        _manager = OWLManager.createOWLOntologyManager();
+        manager = OWLManager.createOWLOntologyManager();
         IRI iri = IRI.create(aURI);
         try {
-            _ontology = _manager.loadOntologyFromOntologyDocument(iri);
-            LOGGER.info("Loaded ontology: " + _ontology);
+            ontology = manager.loadOntologyFromOntologyDocument(iri);
+            LOGGER.info("Loaded ontology: " + ontology);
         } catch (OWLOntologyCreationException e) {
             LOGGER.error("Could not load an ontology!", e);
         }
-        _factory = _manager.getOWLDataFactory();
-        _pm = (PrefixOWLOntologyFormat) _manager.getOntologyFormat(_ontology);
-        _pm.setDefaultPrefix(Constants.SEERC_URL);
-    }
-
-    /**
-     * Reloads active ontology
-     */
-    public void reloadOntology() {
-        _manager = OWLManager.createOWLOntologyManager();
-        // TODO move to constants
-        IRI iri =
-                IRI.create("https://www.dropbox.com/s/ss4642mfzt0cktk/ontology.owl?dl=1");
-        try {
-            _ontology = _manager.loadOntologyFromOntologyDocument(iri);
-            LOGGER.info("Loaded ontology: " + _ontology);
-        } catch (OWLOntologyCreationException e) {
-            LOGGER.error("Could not load an ontology!", e);
-        }
-        _factory = _manager.getOWLDataFactory();
-        _pm = (PrefixOWLOntologyFormat) _manager.getOntologyFormat(_ontology);
-        _pm.setDefaultPrefix(Constants.SEERC_URL);
-
+        factory = manager.getOWLDataFactory();
+        pm = (PrefixOWLOntologyFormat) manager.getOntologyFormat(ontology);
+        pm.setDefaultPrefix(Constants.SEERC_URL);
     }
 
     /**
@@ -123,8 +103,14 @@ public class OntologyManager {
      * @return class expression
      */
     public OWLClass getClass(String aName) {
-        OWLClass returnClass = _factory.getOWLClass(":" + aName, _pm);
-        Iterator<OWLClass> iter = _ontology.getClassesInSignature().iterator();
+
+        OWLClass returnClass;
+        if (aName.startsWith(pm.getDefaultPrefix())) {
+            returnClass = factory.getOWLClass(IRI.create(aName));
+        } else {
+            returnClass = factory.getOWLClass(":" + aName, pm);
+        }
+        Iterator<OWLClass> iter = ontology.getClassesInSignature().iterator();
         while (iter.hasNext()) {
             if (iter.next().equals(returnClass)) {
                 return returnClass;
@@ -142,10 +128,15 @@ public class OntologyManager {
      * @return object property expression
      */
     public OWLObjectProperty getObjectProperty(String aName) {
-        OWLObjectProperty property =
-                _factory.getOWLObjectProperty(":" + aName, _pm);
+
+        OWLObjectProperty property;
+        if (aName.startsWith(pm.getDefaultPrefix())) {
+            property = factory.getOWLObjectProperty(IRI.create(aName));
+        } else {
+            property = factory.getOWLObjectProperty(":" + aName, pm);
+        }
         Iterator<OWLObjectProperty> iter =
-                _ontology.getObjectPropertiesInSignature().iterator();
+                ontology.getObjectPropertiesInSignature().iterator();
         while (iter.hasNext()) {
             if (iter.next().equals(property)) {
                 return property;
@@ -163,10 +154,15 @@ public class OntologyManager {
      * @return data property expression
      */
     public OWLDataProperty getDataProperty(String aName) {
-        OWLDataProperty property =
-                _factory.getOWLDataProperty(":" + aName, _pm);
+
+        OWLDataProperty property;
+        if (aName.startsWith(pm.getDefaultPrefix())) {
+            property = factory.getOWLDataProperty(IRI.create(aName));
+        } else {
+            property = factory.getOWLDataProperty(":" + aName, pm);
+        }
         Iterator<OWLDataProperty> iter =
-                _ontology.getDataPropertiesInSignature().iterator();
+                ontology.getDataPropertiesInSignature().iterator();
         while (iter.hasNext()) {
             if (iter.next().equals(property)) {
                 return property;
@@ -184,8 +180,13 @@ public class OntologyManager {
      * @return individual
      */
     public OWLIndividual getIndividual(String aName) {
-        OWLIndividual individual =
-                _factory.getOWLNamedIndividual(":" + aName, _pm);
+
+        OWLIndividual individual;
+        if (aName.startsWith(pm.getDefaultPrefix())) {
+            individual = factory.getOWLNamedIndividual(IRI.create(aName));
+        } else {
+            individual = factory.getOWLNamedIndividual(":" + aName, pm);
+        }
         return individual;
     }
 
@@ -196,7 +197,7 @@ public class OntologyManager {
      */
     public OWLDataProperty getSubclassProperty() {
         OWLDataProperty property =
-                _factory.getOWLDataProperty(IRI
+                factory.getOWLDataProperty(IRI
                         .create("http://www.w3.org/2000/01/rdf-schema#subclassOf"));
         return property;
     }
@@ -208,9 +209,29 @@ public class OntologyManager {
      */
     public OWLObjectProperty getTypeProperty() {
         OWLObjectProperty property =
-                _factory.getOWLObjectProperty(IRI
+                factory.getOWLObjectProperty(IRI
                         .create("http://www.w3.org/1999/02/22-rdf-syntax-ns#type"));
         return property;
+    }
+
+    /**
+     * TODO a quick check if a property is object
+     * 
+     * @param aProperty property
+     * @return true or false
+     */
+    public boolean isObjectProperty(String aProperty) {
+        return false;
+    }
+
+    /**
+     * TODO a quick check if a property is data
+     * 
+     * @param aProperty property
+     * @return true or false
+     */
+    public boolean isDataProperty(String aProperty) {
+        return false;
     }
 
 }

@@ -4,7 +4,9 @@ import java.io.IOException;
 
 import org.seerc.tbt.utils.MessagingManager;
 import org.seerc.tbt.utils.OntologyManager;
+import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLLiteral;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
 
 /**
  * 
@@ -19,6 +21,13 @@ public class TestMain {
         String string = "\"100\"^^<http://www.w3.org/2001/XMLSchema#int>";
 
         OntologyManager oManager = OntologyManager.getInstance();
+
+        OWLDataProperty prop =
+                oManager.getDataProperty("http://seerc.org/ontology.owl#hasDatabaseSizeCritical");
+        OWLObjectProperty oprop =
+                oManager.getObjectProperty("http://seerc.org/ontology.owl#hasDatabaseSizeCritical");
+        System.out.println(prop);
+        System.out.println(oprop);
 
         // OWLLiteral literal = oManager.toOWLLiteral(string);
 
